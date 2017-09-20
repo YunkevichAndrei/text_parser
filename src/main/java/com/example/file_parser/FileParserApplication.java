@@ -22,13 +22,14 @@ import java.util.*;
 public class FileParserApplication {
 
 	@Bean
+	//объем загружаемого файла
 	public MultipartConfigElement multipartConfigElement() {
 		MultipartConfigFactory factory = new MultipartConfigFactory();
 		factory.setMaxFileSize("1028KB");
 		factory.setMaxRequestSize("1028KB");
 		return factory.createMultipartConfig();
 	}
-
+	//проверка правильности расстановки скобок
 	public static boolean isBrackets(String path) {
 		Stack<Character> stack = new Stack<Character>();
 		String string = FileWorker.readFile(path);
@@ -48,17 +49,18 @@ public class FileParserApplication {
 			return false;
 		return true;
 	}
+	//количества повторяющихся слов в тексте
 	public static List<Map.Entry<String, Integer>> dictionary(String path){
-		String text = FileWorker.readFile(path);
+		String text = FileWorker.readFile(path);    //чтение файла
 		String excess = FileWorker.readFile("excess.txt");
-		text = text.toLowerCase();
+		text = text.toLowerCase();                  //преобразование текста к нижнему регистру
 		excess = excess.toLowerCase();
-		String[] words = text.split("[^a-zA-Zа-яА-Я-]+");
+		String[] words = text.split("[^a-zA-Zа-яА-Я-]+");  //разбиение текста на массив слов регулярным выражением
 		String[] excessWords = excess.split("[^a-zA-Zа-яА-Я-]+");
 
-		ArrayList<String> wordsList = new ArrayList<String>(Arrays.asList(words));
+		ArrayList<String> wordsList = new ArrayList<String>(Arrays.asList(words)); //преобразование массива в список
 		ArrayList<String> excessList = new ArrayList<String>(Arrays.asList(excessWords));
-		wordsList.removeAll(excessList);
+		wordsList.removeAll(excessList);    //удаление из списка слов местоимений, союзов и предлогов
 
 		Map<String, Integer> map = new HashMap<String, Integer>();
 
@@ -70,7 +72,7 @@ public class FileParserApplication {
 		}
 		Set<Map.Entry<String, Integer>> set = map.entrySet();
 		List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(set);
-		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+		Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {      //сортировка
 			public int compare(Map.Entry<String, Integer> a, Map.Entry<String, Integer> b) {
 				return b.getValue().compareTo(a.getValue());
 			}
@@ -78,6 +80,7 @@ public class FileParserApplication {
 		//System.out.println(list);
 		return list;
 	}
+	//метод преобразующий MultipartFile в File
 	public static File convert(MultipartFile file) throws IOException {
 		File convFile = new File(file.getOriginalFilename());
 		convFile.createNewFile();

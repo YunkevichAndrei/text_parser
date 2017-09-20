@@ -20,7 +20,7 @@ public class FileUploadController {
                 String path = FileParserApplication.convert(file).getAbsolutePath();
                 int count = 0;
                 String str = "";
-                for (Map.Entry<String, Integer> entry : FileParserApplication.dictionary(path)) {
+                for (Map.Entry<String, Integer> entry : FileParserApplication.dictionary(path)) { //вывод первых 10 слов из словаря
                     if (count == 10)
                         break;
                     str += entry.getKey() + "<br>";

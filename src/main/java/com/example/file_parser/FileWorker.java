@@ -3,6 +3,7 @@ package com.example.file_parser;
 import java.io.*;
 
 public class FileWorker {
+    //чтение из файла
     public static String  readFile(String fileName) {
         StringBuilder out = new StringBuilder();
         char buf[] = new char[1024];
